@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>万物データ検索アプリ</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; background-color: #f4f7f6; }
+        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
+        button { padding: 12px 24px; background: #4285f4; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #357ae8; }
+        #result { margin-top: 20px; padding: 20px; border-top: 2px solid #eee; min-height: 100px; }
+        .google-btn { display: inline-block; margin-top: 15px; padding: 10px 20px; background: #34a853; color: white; text-decoration: none; border-radius: 5px; font-size: 14px; }
+        .loading { color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔍 データ収集アプリ</h1>
+    <div class="search-box">
+        <input type="text" id="query" placeholder="人物、物体、概念を入力...">
+        <button onclick="fetchData()">データを集める</button>
+    </div>
+
+    <div id="result">
+        <p>ここに検索結果が表示されます。</p>
+    </div>
+</div>
+
+<script>
+    // ※ 実際にAIを動かすにはAPIキーが必要ですが、まずは構造を作成します
+    async function fetchData() {
+        const query = document.getElementById('query').value;
+        const resultDiv = document.getElementById('result');
+
+        if (!query) {
+            alert('キーワードを入力してください');
+            return;
+        }
+
+        // 読み込み中の表示
+        resultDiv.innerHTML = `<p class="loading">「${query}」に関する正確なデータをネットから集めています...</p>`;
+
+        try {
+            // 本来はここにAI（Gemini API）との通信を書きます。
+            // ここではデモとして、構造化されたデータを生成して表示します。
+            
+            setTimeout(() => {
+                const infoText = `
+                    <h3>📊 【${query}】の解析結果</h3>
+                    <p><strong>定義・概要:</strong> インターネット上のデータベースから「${query}」に関する最新の正確な情報を抽出しました。</p>
+                    <p><strong>特徴:</strong> 入力されたキーワードに基づき、AIが関連する概念や歴史、物理的特徴（物体の場​​合）を整理して表示しています。</p>
+                    
+                    <a href="https://www.google.com/search?q=${encodeURIComponent(query)}" target="_blank" class="google-btn">
+                        Googleで直接検索して詳細を確認
+                    </a>
+                `;
+                resultDiv.innerHTML = infoText;
+            }, 1500);
+
+        } catch (error) {
+            resultDiv.innerHTML = "<p style='color:red;'>データの取得に失敗しました。</p>";
+        }
+    }
+</script>
+
+</body>
+</html>
